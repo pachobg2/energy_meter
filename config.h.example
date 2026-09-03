@@ -1,0 +1,47 @@
+#pragma once
+
+/*
+  ============================================================================
+  config.h.example - copy to config.h and fill in real values
+  ============================================================================
+  Keep this file next to energy_meter.ino in the same sketch folder (the
+  Arduino IDE will show it as a second tab automatically). It's the only
+  file you should need to edit between deployments - the main .ino stays
+  generic.
+
+  config.h itself is gitignored, since it holds your WiFi and MQTT
+  passwords in plain text.
+  ============================================================================
+*/
+
+// ---- WiFi ----
+const char* WIFI_SSID     = "your-wifi-ssid";
+const char* WIFI_PASSWORD = "your-wifi-password";
+
+IPAddress STATIC_IP (192, 168, 1, 151);
+IPAddress GATEWAY_IP(192, 168, 1, 1);
+IPAddress SUBNET_MASK(255, 255, 255, 0);
+IPAddress DNS_IP    (192, 168, 1, 1);
+
+// ---- MQTT ----
+const char* MQTT_HOST     = "192.168.1.10";
+const uint16_t MQTT_PORT  = 1883;
+const char* MQTT_USER     = "mqttuser";
+const char* MQTT_PASSWORD = "mqttpass";
+
+// ---- Device identity ----
+const char* DEVICE_ID    = "energy-meter";     // used in topics + unique_ids, no spaces
+const char* DEVICE_NAME  = "Energy Meter";      // Home Assistant device display name
+const char* MANUFACTURER = "P@cho";
+const char* MODEL_NAME   = "ORNO OR-WE-526";
+const char* FIRMWARE_VER = "1.2.0";
+
+// ---- Modbus / RS485 ----
+#define MB_SLAVE_ID       1
+#define MB_BAUD           9600
+#define RS485_RX_PIN      4     // ESP32-C3 GPIO -> MAX485 RO   (adjust to your wiring)
+#define RS485_TX_PIN      5     // ESP32-C3 GPIO -> MAX485 DI   (adjust to your wiring)
+#define RS485_DE_RE_PIN   6     // ESP32-C3 GPIO -> MAX485 DE+RE (adjust to your wiring)
+
+// ---- OTA (ArduinoOTA - upload new firmware over WiFi from the Arduino IDE) ----
+const char* OTA_PASSWORD = "choose-an-ota-password";
