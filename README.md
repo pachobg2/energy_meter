@@ -114,3 +114,11 @@ and reboot the board.
 Credentials, static IP, device identity, RS485 pins, and the OTA password
 all live in `config.h` (gitignored) — copy `config.h.example` to `config.h`
 and fill in real values.
+
+## Version History
+
+`FIRMWARE_VER` lives in the gitignored `config.h`.
+
+| Version | Date | Changes |
+|---|---|---|
+| v1.2.0 | 2026-09-03 | Initial release. |
