@@ -78,6 +78,7 @@
 #include <Preferences.h>
 #include <time.h>
 #include <esp_system.h>
+#include <esp_timer.h>
 #include <esp_task_wdt.h>
 #include <ArduinoOTA.h>
 
@@ -223,7 +224,7 @@ FloatSensorDef floatDefs[SENSOR_COUNT] = {
   [IDX_ENERGY_NIGHT]        = {"energy_night","Night Tariff Energy", "energy", "kWh", "total_increasing", false, 3},
 
   [IDX_WIFI_RSSI]           = {"wifi_rssi",   "WiFi RSSI",   "signal_strength", "dBm", "measurement", true, 0},
-  [IDX_UPTIME]              = {"uptime",      "Uptime",      nullptr,           "s",   "measurement", true, 0},
+  [IDX_UPTIME]              = {"uptime",      "Uptime",      "duration",        "s",   "measurement", true, 0},
   [IDX_MODBUS_FAIL_COUNT]   = {"modbus_fail_count", "Modbus Fail Count", nullptr, nullptr, nullptr, true, 0},
   [IDX_MQTT_FAIL_COUNT]     = {"mqtt_fail_count",   "MQTT Fail Count",   nullptr, nullptr, nullptr, true, 0},
 };
@@ -705,7 +706,10 @@ void publishStates() {
 
 void publishDiagnostics() {
   sensorValue[IDX_WIFI_RSSI] = WiFi.RSSI();
-  sensorValue[IDX_UPTIME] = millis() / 1000;
+  // esp_timer_get_time() is 64-bit microseconds since boot -- unlike
+  // millis() it doesn't wrap back to zero at ~49.7 days, so uptime only
+  // ever zeroes on a real reset or power loss.
+  sensorValue[IDX_UPTIME] = (float)(esp_timer_get_time() / 1000000LL);
   sensorValue[IDX_MODBUS_FAIL_COUNT] = modbusFailCount;
   sensorValue[IDX_MQTT_FAIL_COUNT] = mqttFailCount;
   sensorValid[IDX_WIFI_RSSI] = true;

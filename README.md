@@ -122,3 +122,4 @@ and fill in real values.
 | Version | Date | Changes |
 |---|---|---|
 | v1.2.0 | 2026-09-03 | Initial release. |
+| v1.2.1 | 2026-09-25 | Uptime sensor now reads `esp_timer_get_time()` (64-bit) instead of `millis()`, so it no longer wraps back to zero at ~49.7 days -- it zeroes only on a real reboot or power loss; discovery now declares `device_class: duration`. |
